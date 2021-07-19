@@ -1,4 +1,6 @@
 import Head from "next/head";
+import Header from "../components/Header";
+import InsurancePolicies from "../components/InsurancePolicies";
 
 export default function Home() {
   return (
@@ -12,7 +14,14 @@ export default function Home() {
         <link rel="icon" href="/favicon.png" />
       </Head>
 
-      <div>Eprezto Coding Assessment</div>
+      <main className="bg-gradient-to-br from-eprezto-main to-eprezto-light h-screen">
+        <article className="container px-8 mx-auto">
+          <Header />
+          <main>
+            <InsurancePolicies />
+          </main>
+        </article>
+      </main>
     </>
   );
 }
