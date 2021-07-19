@@ -105,8 +105,6 @@ export default async function handler(
       return 0;
     });
 
-    console.log(response);
-
     let amountLesionesCorporales: number[] = [];
     let amountDanosPersonales: number[] = [];
     let amountGastosMedicos: number[] = [];
