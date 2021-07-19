@@ -15,7 +15,6 @@ module.exports = {
     colors: {
       transparent: "transparent",
       current: "currentColor",
-
       black: colors.black,
       white: colors.white,
       gray: colors.coolGray,
@@ -26,6 +25,10 @@ module.exports = {
       indigo: colors.indigo,
       purple: colors.violet,
       pink: colors.pink,
+      eprezto: {
+        main: "#433185",
+        light: "#9b8cd1",
+      },
     },
     spacing: {
       px: "1px",
@@ -281,6 +284,8 @@ module.exports = {
         '"Courier New"',
         "monospace",
       ],
+      poppins: ["Poppins", "sans-serif"],
+      hind: ["'Hind'", "sans-serif"],
     },
     fontSize: {
       xs: ["0.75rem", { lineHeight: "1rem" }],
