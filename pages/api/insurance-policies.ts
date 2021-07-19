@@ -52,15 +52,25 @@ interface Cobertura {
 }
 
 export interface JSONData {
+  id: Data["_id"];
   companyName: Data["Company"];
   monthlyPrice: Data["monthly_price"];
   price: Data["Precio"];
   coverage: Data["coberturas"];
+  rating: Data["sales_rating"];
 }
+
+export type RouteApiResponse = {
+  data: JSONData[];
+  error: string;
+  maxLesionesCorporales: number;
+  maxDanosPropiedad: number;
+  maxGastosMedicos: number;
+};
 
 export default async function handler(
   _: NextApiRequest,
-  res: NextApiResponse<Partial<JSONData[]> | { error: string }>
+  res: NextApiResponse<Partial<RouteApiResponse>>
 ) {
   const adapter = new JSONFile<Data[]>(
     path.join(__dirname, "..", "..", "..", "..", "db.json")
@@ -70,11 +80,18 @@ export default async function handler(
 
   if (db.data != null) {
     const response = db.data.map(
-      (object): JSONData => ({
+      (
+        object
+      ): Omit<
+        JSONData,
+        "maxLesionesCorporales" | "maxDanosPropiedad" | "maxGastosMedicos"
+      > => ({
         companyName: object.Company,
         coverage: object.coberturas,
         monthlyPrice: object.monthly_price,
         price: object.Precio,
+        rating: object.sales_rating,
+        id: object._id,
       })
     );
 
@@ -88,7 +105,36 @@ export default async function handler(
       return 0;
     });
 
-    res.status(200).json(response);
+    console.log(response);
+
+    let amountLesionesCorporales: number[] = [];
+    let amountDanosPersonales: number[] = [];
+    let amountGastosMedicos: number[] = [];
+
+    response.forEach((value) => {
+      const entries = <[string, { persona: number; accidente: number }][]>(
+        (Object.entries(value.coverage) as unknown)
+      );
+
+      amountLesionesCorporales.push(
+        entries[0][1].accidente + entries[0][1].persona
+      );
+
+      amountDanosPersonales.push(
+        entries[1][1].accidente + entries[1][1].persona
+      );
+
+      amountGastosMedicos.push(entries[2][1].accidente + entries[2][1].persona);
+
+      return;
+    });
+
+    res.status(200).json({
+      data: response,
+      maxDanosPropiedad: Math.max(...amountDanosPersonales),
+      maxGastosMedicos: Math.max(...amountGastosMedicos),
+      maxLesionesCorporales: Math.max(...amountLesionesCorporales),
+    });
 
     return;
   }
