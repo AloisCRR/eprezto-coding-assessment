@@ -46,6 +46,6 @@ Projecto de demostración para la empresa Eprezto.
 
 ![Desktop](https://i.imgur.com/0RzhOlB.png)
 
-<div style="text-align:center">
+<p align="center">
 <img src="https://i.imgur.com/M9AYlU2.jpg" alt="Mobile"/>
-</div>
+</p>
