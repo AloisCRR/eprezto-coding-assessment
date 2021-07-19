@@ -51,7 +51,7 @@ interface Cobertura {
   accidente: number;
 }
 
-export interface Response {
+export interface JSONData {
   companyName: Data["Company"];
   monthlyPrice: Data["monthly_price"];
   price: Data["Precio"];
@@ -60,7 +60,7 @@ export interface Response {
 
 export default async function handler(
   _: NextApiRequest,
-  res: NextApiResponse<Partial<Response[]> | { error: string }>
+  res: NextApiResponse<Partial<JSONData[]> | { error: string }>
 ) {
   const adapter = new JSONFile<Data[]>(
     path.join(__dirname, "..", "..", "..", "..", "db.json")
@@ -70,7 +70,7 @@ export default async function handler(
 
   if (db.data != null) {
     const response = db.data.map(
-      (object): Response => ({
+      (object): JSONData => ({
         companyName: object.Company,
         coverage: object.coberturas,
         monthlyPrice: object.monthly_price,
