@@ -13,7 +13,12 @@ function App({
   Component,
   pageProps,
 }: AppProps<{ insurancePolicies: JSONData[] }>) {
-  const store = useStore({ insurancePolicies: pageProps.insurancePolicies })!;
+  const store = useStore({
+    insurancePolicies: pageProps.insurancePolicies,
+    maxDanosPropiedad: 0,
+    maxGastosMedicos: 0,
+    maxLesionesCorporales: 0,
+  })!;
 
   return (
     <Provider store={store}>
