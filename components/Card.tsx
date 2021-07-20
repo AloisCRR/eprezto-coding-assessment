@@ -9,14 +9,12 @@ interface Props {
 }
 
 export default function Card({ data }: Props) {
-  const maxDanosPropiedad = useSelector<initialState, number>(
-    (state) => state.maxDanosPropiedad
-  );
-  const maxGastosMedicos = useSelector<initialState, number>(
-    (state) => state.maxGastosMedicos
-  );
-  const maxLesionesCorporales = useSelector<initialState, number>(
-    (state) => state.maxLesionesCorporales
+  const meterElementData = useSelector<initialState, [number, number, number]>(
+    (state) => [
+      state.maxDanosPropiedad,
+      state.maxGastosMedicos,
+      state.maxLesionesCorporales,
+    ]
   );
 
   const avatars = [
@@ -31,10 +29,11 @@ export default function Card({ data }: Props) {
       <h4 className="text-2xl font-bold text-center mb-3">
         {data.companyName}
       </h4>
-      <div className="text-center mb-3">
+      <div className="text-center">
         <span className="text-3xl font-bold"> {data.monthlyPrice} </span>
         <span className="font-semibold"> / mes</span>
       </div>
+      <small className="text-center block mb-3">B/.​ {data.price} </small>
       <div className="flex items-center justify-center mb-3">
         <Image
           src={avatars[Math.floor(Math.random() * avatars.length)]}
@@ -48,7 +47,7 @@ export default function Card({ data }: Props) {
       <div>Lesiones corporales</div>
       <meter
         className="w-full"
-        max={maxLesionesCorporales}
+        max={meterElementData[2]}
         value={
           data.coverage.lesiones_corporales.accidente +
           data.coverage.lesiones_corporales.persona
@@ -57,7 +56,7 @@ export default function Card({ data }: Props) {
       <div>Daños a propiedad</div>
       <meter
         className="w-full"
-        max={maxDanosPropiedad}
+        max={meterElementData[0]}
         value={
           data.coverage.danos_propiedad.accidente +
           data.coverage.danos_propiedad.persona
@@ -66,7 +65,7 @@ export default function Card({ data }: Props) {
       <div>Gastos médicos</div>
       <meter
         className="w-full"
-        max={maxGastosMedicos}
+        max={meterElementData[1]}
         value={
           data.coverage.gastos_medicos.accidente +
           data.coverage.gastos_medicos.persona
